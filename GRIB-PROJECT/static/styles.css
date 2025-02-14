@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.weather-maps {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.weather-averages, .warnings {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#windSpeedWarning, #temperatureWarning {
+    color: red;
+    font-weight: bold;
+}
+

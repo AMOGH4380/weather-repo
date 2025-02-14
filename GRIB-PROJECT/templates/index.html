@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style> 
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+
+
+
+.weather-averages, .warnings {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#windSpeedWarning, #temperatureWarning {
+    color: red;
+    font-weight: bold;
+}
+
+</style>
+<body>
+    <div class="weather-maps">
+        <!-- Weather maps will be displayed here -->
+        <img src="static/temp.png" alt="Temperature Map">
+        <img src="static/humidity.png" alt="Humidity Map">
+        <img src="static/wind.png" alt="Wind Speed Map">
+    </div>
+
+    <div class="weather-averages">
+        <h2>Averages</h2>
+        <p id="avgTemp">Average Temperature: Loading...</p>
+        <p id="avgHumidity">Average Humidity: Loading...</p>
+        <p id="avgWind">Average Wind Speed: Loading...</p>
+    </div>
+
+    <div class="warnings">
+        <h2>Messages</h2>
+        <p id="temperatureWarning"></p>
+        <p id="windSpeedWarning"></p>
+    </div>
+
+    <script>
+        // Fetch average data from Flask server
+        fetch('/averages')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('avgTemp').textContent = `Average Temperature: ${data.avg_temp.toFixed(2)} °K`;
+                document.getElementById('avgHumidity').textContent = `Average Humidity: ${data.avg_humidity.toFixed(2)} %`;
+                document.getElementById('avgWind').textContent = `Average Wind Speed: ${data.avg_wind_speed.toFixed(2)} knots`;
+
+                // Check for warnings
+                if (data.avg_temp > 318) {
+                    document.getElementById('temperatureWarning').textContent = 'HIGH Temperature Today!';
+                }
+                if (data.avg_wind_speed > 35) {
+                    document.getElementById('windSpeedWarning').textContent = 'HIGH Wind Speed - ABORT!';
+                }
+                if (data.avg_wind_speed < 35 && data.avg_temp < 318) {
+                    document.getElementById('windSpeedWarning').textContent = 'Conditions are safe to fly within the air space';
+                }
+            })
+            .catch(error => console.error('Error fetching averages:', error));
+    </script>
+</body>
+</html>
+

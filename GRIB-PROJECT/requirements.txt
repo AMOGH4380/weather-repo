@@ -1,0 +1,6 @@
+siphon
+xarray
+matplotlib
+cartopy
+metpy
+Flask
